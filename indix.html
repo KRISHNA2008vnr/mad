@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft</title>
+    <style>
+        @font-face {
+            font-family: 'Minecraftia';
+            src: url('assets/Minecraftia.ttf');
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: url('assets/d.png') no-repeat center center fixed;
+            background-size: cover; /* Ensures the background covers the entire container */
+            color: #fff;
+            font-family: 'Minecraftia', sans-serif;
+            text-align: center;
+        }
+
+        .logo {
+            margin-top: 20px;
+        }
+
+        .loading-container {
+            background: rgba(128, 128, 128, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            max-width: 800px;
+            margin-top: 20px; /* Adjust the top margin of the grey box */
+        }
+
+        .splash-text {
+            font-size: 1.5em;
+            color: black; /* Changed color to black */
+            background: rgba(128, 128, 128, 1);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .loading-bar-container {
+            width: 100%;
+            height: 20px;
+            background: rgba(85, 85, 85, 0.5);
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .loading-bar {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+            background-size: 400%;
+            animation: rainbow 2s linear infinite;
+            position: absolute;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body>
+    <img src="assets/minecraft_logo.png" alt="Minecraft Logo" class="logo">
+    <div class="loading-container">
+        <div class="splash-text" id="splashText">Loading...</div>
+        <div class="loading-bar-container">
+            <div class="loading-bar" id="loadingBar"></div>
+        </div>
+    </div>
+    <script src="splash_texts.js"></script>
+    <script>
+        function getRandomSplashTexts(texts, count) {
+            const shuffled = texts.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        const selectedSplashTexts = getRandomSplashTexts(splashTexts, 5);
+        const splashTextElement = document.getElementById('splashText');
+        let splashIndex = 0;
+
+        function updateSplashText() {
+            splashTextElement.innerText = selectedSplashTexts[splashIndex];
+            splashIndex = (splashIndex + 1) % selectedSplashTexts.length;
+        }
+
+        updateSplashText();
+        setInterval(updateSplashText, 4000);  // Change splash text every 4 seconds
+
+        const loadingBar = document.getElementById('loadingBar');
+        let width = 0;
+        const interval = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(interval);
+                window.location.href = 'index.html';  // Redirect to the next page
+            } else {
+                width += 0.5;
+                loadingBar.style.width = width + '%';
+            }
+        }, 100);  // Total time = 20 seconds (100 intervals of 200ms each)
+
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        backgroundMusic.volume = 0.5;  // Adjust the volume if needed
+    </script>
+</body>
+</html>
